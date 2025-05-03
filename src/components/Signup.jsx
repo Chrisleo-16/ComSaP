@@ -6,6 +6,7 @@ import axios from 'axios'
 
 
 
+
 const Signup = () => {
 
   const [user, setUser] = useState('');
@@ -25,6 +26,16 @@ const Signup = () => {
   const [error, setError] = useState('');
 
   const [success, setSuccess] = useState('');
+
+    const [showPassword, setShowPassword] = useState(false);
+  const [toggled, setToggled] = useState(false);
+
+  const handleToggle = () => {
+    setShowPassword((v) => !v);
+    // trigger animation class toggle
+    setToggled(true);
+    setTimeout(() => setToggled(false), 1000); // duration matches animate.css default
+  };
 
 
 
