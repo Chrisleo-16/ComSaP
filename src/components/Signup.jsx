@@ -133,40 +133,24 @@ const Signup = () => {
             /><label htmlFor="" className='user-label'>Phone No.</label>
           </div>
           <div className="inputs-group m-5">
-             
-    <select class="dropdowns">
-      
-      <option disabled selected class="crac">Users Role</option>
-      <option value={role}
-        onChange=((e) => setRoles(e.target.value))
-      required
-        >Admin</option>
-      <option value={role}
-        onChange=((e) => setRoles(e.target.value))
-      >
-        Event Organizer 
-      </option>
-      <option value={role}
-        onChange=((e) => setRoles(e.target.value))
-      >
-        Volunteer
-      </option>
-      <option value={role}
-        onChange=((e) => setRoles(e.target.value))
-      required>
-        Beneficiary 
-      </option>
-      <option value="">
-        Sponsor/Donor
-      </option>
-      <option value="">
-        Moderator
-      </option>
-    </select>
-    </div>        
-  
-
-          <p style={{
+  <select
+    className="dropdowns"
+    value={role}
+    onChange={(e) => setRole(e.target.value)}
+    required
+  >
+    <option value="" disabled className="crac">
+      Users Role
+    </option>
+    <option value="Admin">Admin</option>
+    <option value="Event Organizer">Event Organizer</option>
+    <option value="Volunteer">Volunteer</option>
+    <option value="Beneficiary">Beneficiary</option>
+    <option value="Sponsor/Donor">Sponsor/Donor</option>
+    <option value="Moderator">Moderator</option>
+  </select>
+</div>
+         <p style={{
             marginLeft: '50px'
           }} className='mt-4'>Already Have an account&nbsp;&nbsp;&nbsp;<Link to='/sign-in' style={{ color: '#f75815' }} >Sign In ?</Link> </p>
 
