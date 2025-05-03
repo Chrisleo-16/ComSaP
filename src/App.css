@@ -2467,3 +2467,24 @@ section,
       padding: 1rem;
   }
 }
+/* keep your existing .inputs-group, .inputs, .user-label as is */
+
+
+/* new: position the toggle inside the right edge of the input */
+.show-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 1rem;       /* aligns with your input’s padding */
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #9e9e9e;    /* matches your unfocused border color */
+}
+
+/* optional: change color when active */
+.show-password-toggle:focus,
+.show-password-toggle:hover {
+  color: #f75815;    /* match your focus border color */
+}
