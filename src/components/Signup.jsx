@@ -117,13 +117,28 @@ const Signup = () => {
               onChange={(e) => setEmail(e.target.value)}
             /><label htmlFor="" className='user-label'>Email Address</label>
           </div>
-          <div className="inputs-group m-5">
-            <input type="password" className='inputs w-75'
-              value={password}
-              required
-              onChange={(e) => setPassword(e.target.value)}
-            /><label htmlFor="" className='user-label'>Password</label>
-          </div>
+                    <div className="inputs-group m-5">
+      <input
+        type={showPassword ? "text" : "password"}
+        className={`inputs w-75 animate__animated ${toggled ? 'animate__pulse' : ''}`}
+        required
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <label className="user-label animate__animated animate__fadeInDown">
+        Password
+      </label>
+
+      {/* toggle button using Bootstrap Icons */}
+      <button
+        type="button"
+        className="show-password-toggle animate__animated animate__fadeIn"
+        onClick={handleToggle}
+        aria-label={showPassword ? "Hide password" : "Show password"}
+      >
+        <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`} />
+      </button>
+    </div>
           <div className="inputs-group m-5">
 
             <input type="tel" className='inputs w-75'
