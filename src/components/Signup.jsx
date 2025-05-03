@@ -134,7 +134,7 @@ const Signup = () => {
           </div>
           <div className="inputs-group m-5">
              
-    <select class="dropdown">
+    <select class="dropdowns">
       
       <option disabled selected class="crac">Users Role</option>
       <option value={role}
