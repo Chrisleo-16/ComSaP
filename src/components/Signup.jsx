@@ -133,12 +133,38 @@ const Signup = () => {
             /><label htmlFor="" className='user-label'>Phone No.</label>
           </div>
           <div className="inputs-group m-5">
-            <input type="text" className='inputs w-75'
-              required
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            /><label htmlFor="" className='user-label'>User Role</label>
-          </div>
+             
+    <select class="dropdown">
+      
+      <option disabled selected class="crac">Users Role</option>
+      <option value={role}
+        onChange=((e) => setRoles(e.target.value))
+      required
+        >Admin</option>
+      <option value={role}
+        onChange=((e) => setRoles(e.target.value))
+      >
+        Event Organizer 
+      </option>
+      <option value={role}
+        onChange=((e) => setRoles(e.target.value))
+      >
+        Volunteer
+      </option>
+      <option value={role}
+        onChange=((e) => setRoles(e.target.value))
+      required>
+        Beneficiary 
+      </option>
+      <option value="">
+        Sponsor/Donor
+      </option>
+      <option value="">
+        Moderator
+      </option>
+    </select>
+    </div>        
+  
 
           <p style={{
             marginLeft: '50px'
