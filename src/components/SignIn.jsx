@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
+import "animate.css/animate.min.css";
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -8,6 +9,16 @@ const SignIn = () => {
 
   const [loading, setLoading] = useState('');
   const [error, setError] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [toggled, setToggled] = useState(false);
+
+  const handleToggle = () => {
+    setShowPassword((v) => !v);
+    // trigger animation class toggle
+    setToggled(true);
+    setTimeout(() => setToggled(false), 1000); // duration matches animate.css default
+  };
 
   const navigate = useNavigate();
   const submit = async (e) => {
@@ -63,13 +74,28 @@ const SignIn = () => {
           onChange={(e) => setEmail(e.target.value)}
           /> <label htmlFor="" className='user-label'>Email</label>
           </div>
-          <div className='inputs-group m-5'>
-          <input type="password"  className='inputs w-75' required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          />
-          <label htmlFor="" className="user-label">Password</label>
-          </div>
+          <div className="inputs-group m-5">
+      <input
+        type={showPassword ? "text" : "password"}
+        className={`inputs w-75 animate__animated ${toggled ? 'animate__pulse' : ''}`}
+        required
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <label className="user-label animate__animated animate__fadeInDown">
+        Password
+      </label>
+
+      {/* toggle button using Bootstrap Icons */}
+      <button
+        type="button"
+        className="show-password-toggle animate__animated animate__fadeIn"
+        onClick={handleToggle}
+        aria-label={showPassword ? "Hide password" : "Show password"}
+      >
+        <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`} />
+      </button>
+    </div>
           <button className=' btn ' type='submit'
           style={{
                     padding:'12px 40px',
