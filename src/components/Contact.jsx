@@ -83,13 +83,13 @@ const Contact = () => {
               <div className="col-md-6 form-group">
                 <div className="input-group">
                   <span className="input-group-text"><i className="bi bi-person"></i></span>
-                  <input type="text" name="name" className="form-control" placeholder="Your name*" required=""/>
+                  <input type="text"  className="form-control" placeholder="Your name" required/>
                 </div>
               </div>
               <div className="col-md-6 form-group">
                 <div className="input-group">
                   <span className="input-group-text"><i className="bi bi-envelope"></i></span>
-                  <input type="email" className="form-control" name="email" placeholder="Email address*" required=""/>
+                  <input type="email" className="form-control"  placeholder="Email address" required/>
                 </div>
               </div>
             </div>
@@ -97,13 +97,13 @@ const Contact = () => {
               <div className="col-md-6 form-group">
                 <div className="input-group">
                   <span className="input-group-text"><i className="bi bi-phone"></i></span>
-                  <input type="text" className="form-control" name="phone" placeholder="Phone number*" required=""/>
+                  <input type="text" className="form-control" placeholder="Phone number" required/>
                 </div>
               </div>
               <div className="col-md-6 form-group">
                 <div className="input-group">
                   <span className="input-group-text"><i className="bi bi-list"></i></span>
-                  <select name="subject" className="form-control" required="">
+                  <select className="form-control" required>
                     <option value="">Select service*</option>
                     <option value="Service 1">Skill Sharing & Education</option>
                     <option value="Service 2">Volunteering</option>
@@ -115,7 +115,7 @@ const Contact = () => {
               <div className="form-group mt-3">
                 <div className="input-group">
                   <span className="input-group-text"><i className="bi bi-chat-dots"></i></span>
-                  <textarea className="form-control" name="message" rows="6" placeholder="Write a message*" required=""></textarea>
+                  <textarea className="form-control"  rows="6" placeholder="Write a message" required></textarea>
                 </div>
               </div>
               
