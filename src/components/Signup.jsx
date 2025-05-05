@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import axios from 'axios'
 import "animate.css/animate.min.css";
-
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
 
