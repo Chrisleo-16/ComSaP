@@ -46,7 +46,7 @@ const Footer = () => {
     </div>
 
     <div className="container copyright text-center mt-4">
-      <p>&copy; <span>Copyright</span> <strong className="px-1 sitename">ComSaP</strong> <span>All Rights Reserved</span></p>
+      <p>&copy; {new Date().getFullYear()}<span>Copyright</span> <strong className="px-1 sitename">ComSaP</strong> <span>All Rights Reserved</span></p>
       <div className="credits">
         {/* <!-- All the links in the footer should remain intact. -->
         <!-- You can delete the links only if you've purchased the pro version. -->
