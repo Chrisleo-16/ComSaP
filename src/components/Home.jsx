@@ -512,10 +512,10 @@ const Home = () => {
             <div className="cta-content" data-aos="fade-up" data-aos-delay="200">
               <h2>Subscribe to our newsletter</h2>
               <p>Stay informed by subscribing to our newsleter for he lates updates and community highlights</p>
-              <form action="forms/newsletter.php" method="post" className="php-email-form cta-form" data-aos="fade-up" data-aos-delay="300">
+              <form action="" method="post" className="php-email-form cta-form" data-aos="fade-up" data-aos-delay="300">
                 <div className="input-group mb-3">
-                  <input type="email" className="form-control" placeholder="Email address..." aria-label="Email address" aria-describedby="button-subscribe"/>
-                  <button className="btn btn-primary" type="submit" id="button-subscribe">Subscribe</button>
+                  <input type="email" className="form-control" placeholder="Email address..." />
+                  <button className="btn btn-primary" type="submit">Subscribe</button>
                 </div>
                 <div className="loading">Loading</div>
                 <div className="error-message"></div>
