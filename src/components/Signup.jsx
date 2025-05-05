@@ -27,6 +27,9 @@ const Signup = () => {
   const [error, setError] = useState('');
 
   const [success, setSuccess] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [shakeConfirm, setShakeConfirm] = useState(false);
 
     const [showPassword, setShowPassword] = useState(false);
   const [toggled, setToggled] = useState(false);
@@ -37,6 +40,19 @@ const Signup = () => {
     setToggled(true);
     setTimeout(() => setToggled(false), 1000); // duration matches animate.css default
   };
+  const handleConfirmToggle = () => {
+    setShowConfirm(!showConfirm);
+  };
+  useEffect(() => {
+    if (confirmPassword && confirmPassword !== password) {
+      setShakeConfirm(true);
+      const timer = setTimeout(() => setShakeConfirm(false), 800);
+      return () => clearTimeout(timer);
+    }
+  }, [confirmPassword, password]);
+
+  const isMatch = confirmPassword && confirmPassword === password;
+  const isMismatch = confirmPassword && confirmPassword !== password;
 
 
 
@@ -151,6 +167,35 @@ const Signup = () => {
         <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`} />
       </button>
     </div>
+           <div className="inputs-group m-5">
+        <input
+          type={showConfirm ? 'text' : 'password'}
+          className={`inputs w-75 animate__animated ${
+            shakeConfirm ? 'animate__shakeX' : ''
+          } ${
+            isMismatch
+              ? 'border border-danger'
+              : isMatch
+              ? 'border border-success'
+              : ''
+          }`}
+          required
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <label className="user-label animate__animated animate__fadeInDown">
+          Confirm Password
+        </label>
+        <button
+          type="button"
+          className="show-password-toggle animate__animated animate__fadeIn"
+          onClick={handleConfirmToggle}
+          aria-label={showConfirm ? 'Hide password' : 'Show password'}
+        >
+          <i className={`bi ${showConfirm ? 'bi-eye-slash' : 'bi-eye'}`} />
+        </button>
+      </div>
           <div className="inputs-group m-5">
 
             <input type="tel" className='inputs w-75'
