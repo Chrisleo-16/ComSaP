@@ -123,10 +123,9 @@ const Category = () => {
                       <img src="assets/img/blog/blog-post-4.webp" alt="" className="img-fluid"/>
                     </div>
 
-                    <p className="post-category">Social & Menatl Well-Being</p>
+                    <p className="post-category">Social & Mental Well-Being</p>
 
-                    <h2 className="title">
-                      <Link to="blog-details.html" className='link'>Advice on personal development, teamwork, productivity, and maintaining a balanced mindset while contributing to community work.</Link>
+                    <h2 className="title">                <Link to="blog-details.html" className='link'>Advice on personal development, teamwork, productivity, and maintaining a balanced mindset while contributing to community work.</Link>
                     </h2>
 
                     <div className="d-flex align-items-center">
