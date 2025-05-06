@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios'
 import "animate.css/animate.min.css";
 
@@ -20,7 +20,7 @@ const SignIn = () => {
     setTimeout(() => setToggled(false), 1000); // duration matches animate.css default
   };
 
-  const navigate = useNavigate();
+  
   const submit = async (e) => {
     e.preventDefault()
     setLoading("Wait while we redirect You")
@@ -35,7 +35,9 @@ const SignIn = () => {
       if (response.data.user) {
         // Store the logged-in user data
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        navigate('/')
+        // redirect **and** reload the app so your <Navbar/> can pick up the new user
+      window.location.replace("/");
+      return;
       }else{
         setError(response.data.Message)
       }
