@@ -2488,3 +2488,10 @@ section,
 .show-password-toggle:hover {
   color: #f75815;    /* match your focus border color */
 }
+.logo {
+  display: block;           /* remove any inline‐flow quirks */
+  width: 100%;              /* be as wide as its container */
+  max-width: 200px;         /* but never exceed 200px */
+  height: auto;             /* preserve aspect ratio */
+  margin: 0 auto;           /* center horizontally */
+}
