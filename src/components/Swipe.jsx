@@ -106,7 +106,7 @@ const Swipe = () => {
                     <Link to="#" className="link">{slide.title}</Link>
                   </h2>
                   <p>{slide.excerpt}</p>
-                  <Link to="#" className="read-more link">
+                  <Link to="/category" className="read-more link">
                     Read More <i className="bi bi-arrow-right"></i>
                   </Link>
                 </div>
