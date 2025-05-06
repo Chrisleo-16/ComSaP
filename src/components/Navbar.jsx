@@ -75,7 +75,6 @@ const Navbar = () => {
               <img 
                 src="/images/-high-resolution-logo-grayscale-transparent.png"
                 alt="Logo"
-                style={{width:"200px"}}
                 className="mobile-name logo"/>
             </Link>
             <div className="d-flex align-items-center">
