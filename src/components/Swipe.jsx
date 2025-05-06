@@ -42,7 +42,7 @@ const Swipe = () => {
       author: 'David Brown',
       date: 'Jan 24, 2025',
       comments: 10,
-      title: 'Social & Menatl Well-Being',
+      title: 'Social & Mental Well-Being',
       excerpt: 'Advice on personal development, teamwork, productivity, and maintaining a balanced mindset while contributing to community work.'
     },
     {
