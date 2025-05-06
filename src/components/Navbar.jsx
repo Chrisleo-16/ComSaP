@@ -72,7 +72,10 @@ const Navbar = () => {
                 alt="Logo"
                 className="desk-logo"
               />
-              <h1 className="mobile-name">ComSaP</h1><span className='mobile-name'>.</span>
+              <img 
+                src="/images/-high-resolution-logo-grayscale-transparent.png"
+                alt="Logo"
+                className="mobile-name"/>
             </Link>
             <div className="d-flex align-items-center">
               <div className="social-links" style={{ marginLeft: "-200px" }}>
