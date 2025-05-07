@@ -139,7 +139,7 @@ const Contact = () => {
     </div>
 
           <div className="row">
-            {showSuccess && (
+            {success && (
         <div
           style={alertStyle}
           className="animate__animated animate__bounceInDown"
@@ -148,11 +148,11 @@ const Contact = () => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <i className="bi bi-check-circle-fill" style={iconStyle} />
             <span style={{ fontSize: '1rem' }}>
-              ✅ Thanks! {success}
+              ✅ Thanks! 
             </span>
           </div>
           <button
-            onClick={() => setShowSuccess(false)}
+            onClick={() => setSuccess("")}
             style={closeBtnStyle}
             aria-label="Close"
           >
