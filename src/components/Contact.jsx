@@ -14,11 +14,11 @@ const Contact = () => {
     })
   }, [])
 
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [phone, setPhone] = useState("")
-  const [service, setService] = useState("")
-  const [message, setMessage] = useState("")
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [service, setService] = useState("");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -27,11 +27,11 @@ const Contact = () => {
     setLoading("Please wait as we configure your request")
     try {
       const formData = new FormData()
-      formData.append('name',name)
-      formData.append('email'email)
-      formData.append('phone', phone)
-      formData.append('service', service)
-      formData.append('message',message)
+      formData.append('name',name);
+      formData.append('email',email);
+      formData.append('phone', phone);
+      formData.append('service', service);
+      formData.append('message',message);
       const response = await axios.post(
         'https://community.pythonanywhere.com/api/contact_us',
         formData
