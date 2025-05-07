@@ -1,51 +1,53 @@
 import React, { useEffect, useState } from 'react'
 import AOS from 'aos'
-import 'aos/dist/aos.css';
-import axios from "axios";
-import { Link } from 'react-router-dom';
-
+import 'aos/dist/aos.css'
+import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 const Contact = () => {
   useEffect(() => {
-      AOS.init({
-        duration: 1200, // Animation duration
-        easing: 'ease-in-out', // Easing function
-        once: false, // Whether animation should happen only once
-        mirror: false, // Whether elements should animate out while scrolling past them
-      });
-      }, [])
-    const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    service: '',
-    message: ''
-  })
-  const [loading, setLoading] = useState(false)
+    AOS.init({
+      duration: 1200,
+      easing: 'ease-in-out',
+      once: false,
+      mirror: false,
+    })
+  }, [])
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setForm(prev => ({ ...prev, [name]: value }))
-  }
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    service: '',
+    message: ''
+  })
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    try {
-      // replace with your Flask endpoint
-      await axios.post('https://community.pythonanywhere.com/api/contact', form)
-      window.alert('Message sent successfully!')
-      setForm({ name: '', email: '', phone: '', service: '', message: '' })
-    } catch (err) {
-      console.error(err)
-      window.alert('Failed to send message. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setForm(prev => ({ ...prev, [name]: value }))
   }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      await axios.post(
+        'https://community.pythonanywhere.com/api/contact',
+        form
+      )
+      window.alert('Message sent successfully!')
+      setForm({ name: '', email: '', phone: '', service: '', message: '' })
+    } catch (err) {
+      console.error(err)
+      window.alert('Failed to send message. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <div>
-        <main className="main">
+    <main className="main">
 
 {/* <!-- Page Title --> */}
 <div className="page-title">
@@ -105,68 +107,129 @@ const Contact = () => {
       </div>
     </div>
 
-    <div className="row">
-      <div className="col-lg-12">
-        <div className="form-wrapper" data-aos="fade-up" data-aos-delay="400">
-          <form action=""  onSubmit={handleSubmit} className="">
-            <div className="row">
-              <div className="col-md-6 form-group">
-                <div className="input-group">
-                  <span className="input-group-text"><i className="bi bi-person"></i></span>
-                  <input type="text"  className="form-control" value={form.name} onChange={handleChange} placeholder="Your name" required/>
-                </div>
-              </div>
-              <div className="col-md-6 form-group">
-                <div className="input-group">
-                  <span className="input-group-text"><i className="bi bi-envelope"></i></span>
-                  <input type="email" className="form-control"  placeholder="Email address" value{form.email} onChange={handleChange} required/>
-                </div>
-              </div>
-            </div>
-            <div className="row mt-3">
-              <div className="col-md-6 form-group">
-                <div className="input-group">
-                  <span className="input-group-text"><i className="bi bi-phone"></i></span>
-                  <input type="text" className="form-control" placeholder="Phone number" value={form.phone} onChange={handleChange} required/>
-                </div>
-              </div>
-              <div className="col-md-6 form-group">
-                <div className="input-group">
-                  <span className="input-group-text"><i className="bi bi-list"></i></span>
-                  <select className="form-control"  value={form.services} onChange={handleChange} required>
-                    <option value="">Select service*</option>
-                    <option value="Service 1">Skill Sharing & Education</option>
-                    <option value="Service 2">Volunteering</option>
-                    <option value="Service 3">Social & Mental Well-being</option>
-                    <option value="Service 4">Fundraising and advocacy</option>
-                  </select>
-                </div>
-              </div>
-              <div className="form-group mt-3">
-                <div className="input-group">
-                  <span className="input-group-text"><i className="bi bi-chat-dots"></i></span>
-                  <textarea className="form-control"  rows="6" placeholder="Write a message" value={form.message} onChange={handleChange} required></textarea>
-                </div>
-              </div>
-              
-              <div className="text-center">
-                <button type="submit" disabled={loading}>{ loading ? 'Sending....': ' Submit Message'}</button>
-              </div>
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="form-wrapper" data-aos="fade-up" data-aos-delay="400">
+                <form onSubmit={handleSubmit}>
+                  <div className="row">
+                    {/* Name */}
+                    <div className="col-md-6 form-group">
+                      <div className="input-group">
+                        <span className="input-group-text">
+                          <i className="bi bi-person"></i>
+                        </span>
+                        <input
+                          type="text"
+                          name="name"                           // ← add name
+                          className="form-control"
+                          placeholder="Your name"
+                          value={form.name}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </div>
+                    {/* Email */}
+                    <div className="col-md-6 form-group">
+                      <div className="input-group">
+                        <span className="input-group-text">
+                          <i className="bi bi-envelope"></i>
+                        </span>
+                        <input
+                          type="email"
+                          name="email"                          // ← add name
+                          className="form-control"
+                          placeholder="Email address"
+                          value={form.email}                   // ← proper syntax
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
 
+                  <div className="row mt-3">
+                    {/* Phone */}
+                    <div className="col-md-6 form-group">
+                      <div className="input-group">
+                        <span className="input-group-text">
+                          <i className="bi bi-phone"></i>
+                        </span>
+                        <input
+                          type="text"
+                          name="phone"                          // ← add name
+                          className="form-control"
+                          placeholder="Phone number"
+                          value={form.phone}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </div>
+                    {/* Service */}
+                    <div className="col-md-6 form-group">
+                      <div className="input-group">
+                        <span className="input-group-text">
+                          <i className="bi bi-list"></i>
+                        </span>
+                        <select
+                          name="service"                        // ← add name
+                          className="form-control"
+                          value={form.service}                  // ← match state key
+                          onChange={handleChange}
+                          required
+                        >
+                          <option value="">Select service*</option>
+                          <option value="Skill Sharing & Education">
+                            Skill Sharing & Education
+                          </option>
+                          <option value="Volunteering">
+                            Volunteering
+                          </option>
+                          <option value="Social & Mental Well-being">
+                            Social & Mental Well-being
+                          </option>
+                          <option value="Fundraising and advocacy">
+                            Fundraising and advocacy
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Message */}
+                  <div className="form-group mt-3">
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <i className="bi bi-chat-dots"></i>
+                      </span>
+                      <textarea
+                        name="message"                            // ← add name
+                        className="form-control"
+                        rows="6"
+                        placeholder="Write a message"
+                        value={form.message}
+                        onChange={handleChange}
+                        required
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  {/* Submit */}
+                  <div className="text-center mt-3">
+                    <button type="submit" disabled={loading}>
+                      {loading ? 'Sending…' : 'Submit Message'}
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-          </form>
+          </div>
         </div>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-{/* <!-- /Contact Section --> */}
-
-</main>
-    </div>
+      </section>
+    </main>
   )
 }
 
 export default Contact
+
