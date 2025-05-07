@@ -33,7 +33,7 @@ const GetServices = () => {
 
   
   
-/ ─── combined date + search filtering ────────
+//─── combined date + search filtering ────────
   useEffect(() => {
     if (!events.length) {
       setFilteredProducts([]);
