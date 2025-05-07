@@ -13,8 +13,15 @@ const MpesaPayment = () => {
     const submit = async (e) => {
         e.preventDefault();
         setMessage('');
-        setLoading(true);
 
+        // Basic Kenyan phone number validation (e.g., 2547XXXXXXXX)
+        const phonePattern = /^2547\d{8}$/;
+        if (!phone || !phonePattern.test(phone)) {
+            setMessage('Please enter a valid phone number (e.g. 2547XXXXXXXX).');
+            return;
+        }
+
+        setLoading(true);
         const formData = new FormData();
         formData.append('phone', phone);
         formData.append('amount', event.event_cost);
@@ -45,16 +52,16 @@ const MpesaPayment = () => {
                         </div>
                     </div>
 
-                    <div className="payment-form" onSubmit={submit}>
+                    <form className="payment-form" onSubmit={submit}>
                         <div className="inputs-group">
-                                <input
-                                    type="tel"
-                                    className="inputs w-100"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                    required 
-                                />
-                            <label className="user-label" htmlFor="">Enter Phone e.g. 254 XXX XXX XXX</label>
+                            <input
+                                type="tel"
+                                className="inputs w-100"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                required
+                            />
+                            <label className="user-label">Enter Phone e.g. 2547XXXXXXXX</label>
                         </div>
 
                         <button
@@ -72,7 +79,7 @@ const MpesaPayment = () => {
                         </button>
 
                         {message && (
-                            <div className={`alert-toast ${message.includes('successful') ? 'success' : 'error'}`}>
+                            <div className={`alert-toast ${message.toLowerCase().includes('success') ? 'success' : 'error'}`}>
                                 <div className="alert-text">{message}</div>
                             </div>
                         )}
@@ -86,7 +93,7 @@ const MpesaPayment = () => {
                                 ← Back to Events
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
