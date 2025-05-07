@@ -82,7 +82,7 @@ const MpesaPayment = () => {
                             <button
                                 type="button"
                                 className="btn btn-link link"
-                                onClick={() => navigate('/')}
+                                onClick={() => navigate('/get-services')}
                             >
                                 ← Back to Events
                             </button>
