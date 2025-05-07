@@ -32,16 +32,38 @@ const GetServices = () => {
   },[])
 
   
-  useEffect(() => {
-      if (!events) return;
-      const filtered= events.filter((event) =>
-      event.event_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.event_description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.event_date_time.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-  setFilteredProducts(filtered)
+  
+/ ─── combined date + search filtering ────────
+  useEffect(() => {
+    if (!events.length) {
+      setFilteredProducts([]);
+      return;
+    }
 
-  },[searchQuery,events])
+    // compute today's date at midnight for a pure date comparison
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const filtered = events.filter((event) => {
+      // 1️⃣ date filter: drop any event before today
+      const eventDate = new Date(event.event_date_time);
+      eventDate.setHours(0, 0, 0, 0);
+      if (eventDate < today) return false;
+
+      // 2️⃣ your original search filter (unchanged)
+      return (
+        event.event_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.event_description
+             .toLowerCase()
+             .includes(searchQuery.toLowerCase()) ||
+        event.event_date_time
+             .toLowerCase()
+             .includes(searchQuery.toLowerCase())
+      );
+    });
+
+    setFilteredProducts(filtered);
+  }, [events, searchQuery]);
   const imgUrl = ("https://community.pythonanywhere.com/static/images/")
   return (    
     <div className='row container-fluid '>
