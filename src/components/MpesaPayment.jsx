@@ -52,7 +52,7 @@ const MpesaPayment = () => {
                                     className="inputs w-100"
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
-                                    required
+                                    required 
                                 />
                             <label className="user-label" htmlFor="">Enter Phone e.g. 254 XXX XXX XXX</label>
                         </div>
