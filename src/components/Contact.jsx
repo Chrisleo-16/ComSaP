@@ -14,35 +14,42 @@ const Contact = () => {
     })
   }, [])
 
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    service: '',
-    message: ''
-  })
-  const [loading, setLoading] = useState(false)
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
+  const [service, setService] = useState("")
+  const [message, setMessage] = useState("")
+  const [loading, setLoading] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setForm(prev => ({ ...prev, [name]: value }))
-  }
-
-  const handleSubmit = async (e) => {
+  const submit = async (e) => {
     e.preventDefault()
-    setLoading(true)
+    setLoading("Please wait as we configure your request")
     try {
-      await axios.post(
-        'https://community.pythonanywhere.com/api/contact',
-        form
+      const formData = new FormData()
+      formData.append('name',name)
+      formData.append('email'email)
+      formData.append('phone', phone)
+      formData.append('service', service)
+      formData.append('message',message)
+      const response = await axios.post(
+        'https://community.pythonanywhere.com/api/contact_us',
+        formData
       )
-      window.alert('Message sent successfully!')
-      setForm({ name: '', email: '', phone: '', service: '', message: '' })
+      setSuccess(response.data.Message)
+      
+      
+    
     } catch (err) {
       console.error(err)
       window.alert('Failed to send message. Please try again.')
     } finally {
-      setLoading(false)
+      setLoading("")
+      setName("")
+      setEmail("")
+      setPhone("")
+      setService("")
+      setMessage("")
     }
   }
 
@@ -110,7 +117,8 @@ const Contact = () => {
           <div className="row">
             <div className="col-lg-12">
               <div className="form-wrapper" data-aos="fade-up" data-aos-delay="400">
-                <form onSubmit={handleSubmit}>
+                {success}
+                <form onSubmit={submit}>
                   <div className="row">
                     {/* Name */}
                     <div className="col-md-6 form-group">
@@ -123,8 +131,8 @@ const Contact = () => {
                           name="name"                           // ← add name
                           className="form-control"
                           placeholder="Your name"
-                          value={form.name}
-                          onChange={handleChange}
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
                           required
                         />
                       </div>
@@ -140,8 +148,8 @@ const Contact = () => {
                           name="email"                          // ← add name
                           className="form-control"
                           placeholder="Email address"
-                          value={form.email}                   // ← proper syntax
-                          onChange={handleChange}
+                          value={email}                   // ← proper syntax
+                          onChange={(e) => setEmail(e.target.value)}
                           required
                         />
                       </div>
@@ -160,8 +168,8 @@ const Contact = () => {
                           name="phone"                          // ← add name
                           className="form-control"
                           placeholder="Phone number"
-                          value={form.phone}
-                          onChange={handleChange}
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
                           required
                         />
                       </div>
@@ -175,8 +183,8 @@ const Contact = () => {
                         <select
                           name="service"                        // ← add name
                           className="form-control"
-                          value={form.service}                  // ← match state key
-                          onChange={handleChange}
+                          value={service}                  // ← match state key
+                          onChange={(e) => setService(e.target.value)}
                           required
                         >
                           <option value="">Select service*</option>
@@ -208,8 +216,8 @@ const Contact = () => {
                         className="form-control"
                         rows="6"
                         placeholder="Write a message"
-                        value={form.message}
-                        onChange={handleChange}
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
                         required
                       ></textarea>
                     </div>
