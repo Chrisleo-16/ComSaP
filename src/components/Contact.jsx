@@ -43,14 +43,13 @@ const Contact = () => {
     } catch (err) {
       console.error(err)
       window.alert('Failed to send message. Please try again.')
-    } finally {
+    }
       setLoading("")
       setName("")
       setEmail("")
       setPhone("")
       setService("")
       setMessage("")
-    }
   }
 
   return (
