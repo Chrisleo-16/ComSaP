@@ -10,7 +10,7 @@ const MpesaPayment = () => {
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         setMessage('');
         setLoading(true);
@@ -45,7 +45,7 @@ const MpesaPayment = () => {
                         </div>
                     </div>
 
-                    <div className="payment-form">
+                    <div className="payment-form" onSubmit={submit}>
                         <div className="inputs-group">
                                 <input
                                     type="tel"
@@ -60,7 +60,6 @@ const MpesaPayment = () => {
                         <button
                             type="submit"
                             className="payment-button"
-                            onClick={handleSubmit}
                             disabled={loading}
                         >
                             {loading ? (
