@@ -39,31 +39,25 @@ const GetServices = () => {
       setFilteredProducts([]);
       return;
     }
+const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    // compute today's date at midnight for a pure date comparison
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const filtered = events.filter((event) => {
+      // 2️⃣ remove past events
+      const eventDate = new Date(event.event_date_time);
+      eventDate.setHours(0, 0, 0, 0);
+      if (eventDate < today) return false;
 
-    const filtered = events.filter((event) => {
-      // 1️⃣ date filter: drop any event before today
-      const eventDate = new Date(event.event_date_time);
-      eventDate.setHours(0, 0, 0, 0);
-      if (eventDate < today) return false;
+      // 3️⃣ now only apply search on title & description
+      const q = searchQuery.toLowerCase();
+      return (
+        event.event_title.toLowerCase().includes(q) ||
+        event.event_description.toLowerCase().includes(q)
+      );
+    });
 
-      // 2️⃣ your original search filter (unchanged)
-      return (
-        event.event_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.event_description
-             .toLowerCase()
-             .includes(searchQuery.toLowerCase()) ||
-        event.event_date_time
-             .toLowerCase()
-             .includes(searchQuery.toLowerCase())
-      );
-    });
-
-    setFilteredProducts(filtered);
-  }, [events, searchQuery]);
+    setFilteredProducts(filtered);
+  }, [events, searchQuery]);
   const imgUrl = ("https://community.pythonanywhere.com/static/images/")
   return (    
     <div className='row container-fluid '>
@@ -143,8 +137,15 @@ const GetServices = () => {
 
 
       <div className="row">
-        {filteredProducts.map((event, index) => (
-          <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={index}>
+        {filteredProducts
+    .filter(event => {
+      const today = new Date(); today.setHours(0,0,0,0);
+      const d = new Date(event.event_date_time);
+      d.setHours(0,0,0,0);
+      return d >= today;
+    })
+    .map((event, index) => (
+      <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={index}>
             <div
               className="card h-100 shadow-sm"
               style={{
