@@ -13,6 +13,35 @@ const Contact = () => {
         mirror: false, // Whether elements should animate out while scrolling past them
       });
       }, [])
+    const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    service: '',
+    message: ''
+  })
+  const [loading, setLoading] = useState(false)
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setForm(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      // replace with your Flask endpoint
+      await axios.post('/api/contact', form)
+      window.alert('Message sent successfully!')
+      setForm({ name: '', email: '', phone: '', service: '', message: '' })
+    } catch (err) {
+      console.error(err)
+      window.alert('Failed to send message. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
     <div>
         <main className="main">
