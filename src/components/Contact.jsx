@@ -37,6 +37,7 @@ const Contact = () => {
         formData
       )
       setSuccess(response.data.Message)
+      setTimeout(() => setSuccess(''), 5000)
       
       
     
@@ -50,6 +51,30 @@ const Contact = () => {
       setPhone("")
       setService("")
       setMessage("")
+  }
+  const alertStyle = {
+    position: 'fixed',
+    top: '1rem',
+    right: '1rem',
+    minWidth: '300px',
+    background: 'rgba(40,167,69,0.9)', // Bootstrap success green
+    color: 'white',
+    padding: '1rem',
+    borderRadius: '0.75rem',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    zIndex: 9999
+  }
+  const iconStyle = { fontSize: '1.5rem', marginRight: '0.5rem' }
+  const closeBtnStyle = {
+    background: 'transparent',
+    border: 'none',
+    color: 'white',
+    fontSize: '1.2rem',
+    cursor: 'pointer',
+    opacity: 0.8
   }
 
   return (
@@ -114,9 +139,29 @@ const Contact = () => {
     </div>
 
           <div className="row">
+            {showSuccess && (
+        <div
+          style={alertStyle}
+          className="animate__animated animate__bounceInDown"
+          data-aos="zoom-in"
+        >
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <i className="bi bi-check-circle-fill" style={iconStyle} />
+            <span style={{ fontSize: '1rem' }}>
+              ✅ Thanks! {success}
+            </span>
+          </div>
+          <button
+            onClick={() => setShowSuccess(false)}
+            style={closeBtnStyle}
+            aria-label="Close"
+          >
+            &times;
+          </button>
+        </div>
+      )}
             <div className="col-lg-12">
               <div className="form-wrapper" data-aos="fade-up" data-aos-delay="400">
-                {success}
                 <form onSubmit={submit}>
                   <div className="row">
                     {/* Name */}
