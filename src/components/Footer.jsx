@@ -37,7 +37,15 @@ const Footer = () => {
             <Link to="" className='link'><i className="bi bi-twitter-x"></i></Link>
             <Link className='link' to="https://www.facebook.com/yourusername"><i className="bi bi-facebook"></i></Link>
             <Link className='link' to="https://www.instagram.com/@v.a.wzen_lyf"><i className="bi bi-instagram"></i></Link>
-            <Link className='link' to="https://wa.me/+254108720342"><i className="bi bi-whatsapp"></i></Link>
+            <a
+  className="link"
+  href="https://wa.me/254108720342?text=Hi%20there!%20I'm%20interested%20in%20your%20services.%20Can%20I%20get%20more%info%about%20this?"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <i className="bi bi-whatsapp"></i>
+</a>
+
           </div>
         </div>
 
