@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import AOS from 'aos'
 import 'aos/dist/aos.css';
+import axios from "axios";
 import { Link } from 'react-router-dom';
 
 
@@ -32,7 +33,7 @@ const Contact = () => {
     setLoading(true)
     try {
       // replace with your Flask endpoint
-      await axios.post('/api/contact', form)
+      await axios.post('https://community.pythonanywhere.com/api/contact', form)
       window.alert('Message sent successfully!')
       setForm({ name: '', email: '', phone: '', service: '', message: '' })
     } catch (err) {
