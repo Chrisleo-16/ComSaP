@@ -80,9 +80,9 @@ const Navbar = () => {
             </Link>
             <div className="d-flex align-items-center">
               <div className="social-links" style={{ marginLeft: "-200px" }}>
-                <Link to="#" className="facebook link"><i className="bi bi-facebook"></i></Link>
-                <Link to="#" className="twitter link"><i className="bi bi-twitter"></i></Link>
-                <Link to="#" className="instagram link"><i className="bi bi-instagram"></i></Link>
+                <Link to="https://www.facebook.com/yourusername" className="facebook link"><i className="bi bi-facebook"></i></Link>
+                <Link to="https://www.twitter.com/@yourusername" className="twitter link"><i className="bi bi-twitter"></i></Link>
+                <Link to="https://www.instagram.com/@v.a.wzen_lyf" className="instagram link"><i className="bi bi-instagram"></i></Link>
               </div>
             </div>
           </div>
