@@ -34,7 +34,7 @@ const Footer = () => {
         <div className="col-lg-4 col-md-3 footer-links">
           <h4>Social Links</h4>
           <div className="social-links d-flex mt-4">
-            <a href="https://www.twitter.com/@yourusername" target="_blank" className='link'><i className="bi bi-twitter-x"></i></Link>
+            <a href="https://www.twitter.com/@yourusername" target="_blank" className='link'><i className="bi bi-twitter-x"></i></a>
             <a className='link' href="https://www.facebook.com/yourusername" target="_blank"><i className="bi bi-facebook"></i></a>
             <a className='link' target="_blank" href="https://www.instagram.com/@v.a.wzen_lyf"><i className="bi bi-instagram"></i></a>
             <a
