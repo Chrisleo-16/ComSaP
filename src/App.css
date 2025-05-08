@@ -238,11 +238,13 @@ h6 {
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
-/* Navmenu - Desktop */
 @media (min-width: 1200px) {
   .navmenu {
     padding: 0;
-    position:sticky;
+    position: sticky;
+    top: 0; /* Ensure the navbar sticks to the top of the page */
+    z-index: 1000; /* Ensure it's above other content when scrolling */
+    background-color: var(--nav-background-color); /* Set a background color to avoid transparency issues */
   }
 
   .navmenu ul {
@@ -345,6 +347,7 @@ h6 {
     visibility: visible;
   }
 }
+
 
 /* Navmenu - Mobile */
 @media (max-width: 1199px) {
