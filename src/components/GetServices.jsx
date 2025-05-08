@@ -75,7 +75,6 @@ const today = new Date();
 
 <div className="title-wrapper">
   <h1>Get Services</h1>
-  <p>We found <strong>44</strong> results for your search term <strong>search tern</strong></p>
 </div>
     </div>
     </main>
