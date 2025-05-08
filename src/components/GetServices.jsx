@@ -13,10 +13,8 @@ const GetServices = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  // Assuming you have a method to get the user role (could be from context, state, or an API)
-  const userRole = 'Volunteer'; // This is just an example, replace with actual role check logic
-  const isEventOrganizer = userRole === 'Volunteer'; // Check if the user is an Event Organizer
-  const isAdmin = userRole === 'admin'; // Check if the user is an Admin
+  // Add this to check if the user is authenticated
+  const isAuthenticated = false; // This should be replaced with your auth check (e.g. token, user context, etc.)
 
   const getEvents = async () => {
     setLoading("Loading Events");
@@ -34,6 +32,7 @@ const GetServices = () => {
     getEvents();
   }, []);
 
+  // Filter events based on the search query
   useEffect(() => {
     if (!events.length) {
       setFilteredProducts([]);
@@ -60,16 +59,14 @@ const GetServices = () => {
 
   const imgUrl = "https://community.pythonanywhere.com/static/images/";
 
+  // Handle registration button click
   const handleRegisterClick = (event) => {
-    if (isAdmin) {
-      // If admin, display a message or take them to an admin page
-      alert("Admins cannot register for events.");
-    } else if (!isEventOrganizer) {
-      // If the user is not an event organizer, they can register for events
-      navigate('/mpesa-payment', { state: { event } });
+    if (!isAuthenticated) {
+      // Redirect to sign-up page if not authenticated
+      navigate('/sign-up', { state: { fromEvent: event } });
     } else {
-      // Event organizers cannot register for events they create
-      alert("Event organizers cannot register for their own events.");
+      // If already authenticated, proceed to payment
+      navigate('/mpesa-payment', { state: { event } });
     }
   };
 
@@ -150,19 +147,6 @@ const GetServices = () => {
           </div>
         </form>
 
-        {/* Event Organizer or Admin specific content rendering */}
-        {isAdmin && (
-          <div className="alert alert-warning">
-            Admins cannot register for events. Please manage the events.
-          </div>
-        )}
-
-        {isEventOrganizer && (
-          <div className="alert alert-info">
-            Event organizers cannot register for their own events.
-          </div>
-        )}
-
         <div className="row">
           {filteredProducts
             .filter(event => {
@@ -209,7 +193,7 @@ const GetServices = () => {
                         padding: '0.5rem 1.5rem',
                       }}
                     >
-                      {isAdmin || isEventOrganizer ? 'Cannot Register' : 'Register'}
+                      Register
                     </button>
                   </div>
                 </div>
