@@ -191,10 +191,6 @@ const Navbar = () => {
         )}
       </div>
     </>
-  ) : null}
-  </div>
-</>
-                  
                   ) : (
                     <>
                       <Link to="/sign-up" className="link btn btn-primary">
