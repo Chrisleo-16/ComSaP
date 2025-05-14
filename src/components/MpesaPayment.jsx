@@ -15,7 +15,7 @@ const MpesaPayment = () => {
         setMessage('');
 
         // Basic Kenyan phone number validation (e.g., 254XXXXXXXXX)
-        const phonePattern = /^254\d{8}$/;
+        const phonePattern = /^254\d{9}$/;
         if (!phone || !phonePattern.test(phone)) {
             setMessage('Please enter a valid phone number (e.g. 254XXXXXXXXX).');
             return;
