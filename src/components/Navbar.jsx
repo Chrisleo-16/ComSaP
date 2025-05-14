@@ -6,8 +6,6 @@ const Navbar = () => {
   const [isMobileNavActive, setIsMobileNavActive] = useState(false);
   const [userName, setUserName] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useRef(null);
 
   // Load user from localStorage
   useEffect(() => {
@@ -42,12 +40,20 @@ const Navbar = () => {
   };
 
   // Close dropdown on outside click
+const [showDropdown, setShowDropdown] = useState(false);
+  const [openName, setOpenName] = useState(false);
+  const [openPass, setOpenPass] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // close when click outside
   useEffect(() => {
-    const onClickOutside = (e) => {
+    function onClickOutside(e) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setShowDropdown(false);
+        setOpenName(false);
+        setOpenPass(false);
       }
-    };
+    }
     document.addEventListener('mousedown', onClickOutside);
     return () => document.removeEventListener('mousedown', onClickOutside);
   }, []);
@@ -128,68 +134,101 @@ const Navbar = () => {
   {isLoggedIn ? (
     <>
       <div className="position-relative" ref={dropdownRef}>
-        <i
-          className="bi bi-person-circle fs-3"
-          style={{ cursor: 'pointer', color: '#f75815' }}
-          title={userName}
-          onClick={() => setShowDropdown(prev => !prev)}
-        />
-        {showDropdown && (
-          <div
-            className="position-absolute start-100 top-0 mt-2 ms-2 p-3 shadow-sm animate__animated animate__fadeInDown"
-            style={{
-              backgroundColor: '#fff7f7',
-              borderRadius: '0.5rem',
-              minWidth: '220px',
-              zIndex: 1000,
-              boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
-            }}
-          >
-            {/* User info */}
-            <div className="d-flex align-items-center mb-3">
-              <i className="bi bi-star-fill text-warning me-2"></i>
-              <span className="fw-semibold">{userName}</span>
-            </div>
-
-            <hr className="my-2" />
-
-            {/* Change Name */}
-            <div className="mb-2">
-              <label className="form-label small fw-semibold mb-1">Change Name</label>
-              <input
-                type="text"
-                className="form-control form-control-sm"
-                placeholder="Change Name"
-                disabled
-              />
-            </div>
-
-            {/* Change Password */}
-            <div className="mb-3">
-              <label className="form-label small fw-semibold mb-1">Change Password</label>
-              <input
-                type="password"
-                className="form-control form-control-sm"
-                placeholder="Change Password"
-                disabled
-              />
-            </div>
-
-            <button
-              onClick={handleLogout}
-              className="btn w-100 shadow-sm"
+          <i
+            className="bi bi-person-circle fs-3"
+            style={{ cursor: 'pointer', color: '#f75815' }}
+            title={userName}
+            onClick={() => setShowDropdown(prev => !prev)}
+          />
+          {showDropdown && (
+            <div
+              className="position-absolute start-100 top-0 mt-2 ms-2 p-3 shadow-sm animate__animated animate__fadeInDown"
               style={{
-                backgroundColor: '#f75815',
-                color: '#fff',
-                borderRadius: '2rem',
-                padding: '0.5rem',
+                backgroundColor: '#fff7f7',
+                borderRadius: '0.5rem',
+                minWidth: '240px',
+                zIndex: 1000,
+                boxShadow: '0 6px 12px rgba(0,0,0,0.1)'
               }}
             >
-              <i className="bi bi-box-arrow-right me-2"></i>Logout
-            </button>
-          </div>
-        )}
-      </div>
+              {/* Header */}
+              <div className="d-flex align-items-center mb-3">
+                <i className="bi bi-star-fill text-warning me-2"></i>
+                <span className="fw-semibold">{userName}</span>
+              </div>
+              <hr className="my-2" />
+
+              {/* Change Name item */}
+              <div className="mb-2">
+                <button
+                  className="btn btn-light w-100 text-start d-flex justify-content-between align-items-center"
+                  style={{ borderRadius: '0.5rem' }}
+                  onClick={() => {
+                    setOpenName(n => !n);
+                    setOpenPass(false);
+                  }}
+                >
+                  Change Name
+                  <i className={`bi ms-2 ${openName ? 'bi-caret-up-fill' : 'bi-caret-down-fill'}`}></i>
+                </button>
+                {openName && (
+                  <div
+                    className="mt-1 p-2 text-center small"
+                    style={{
+                      backgroundColor: '#fff',
+                      borderRadius: '0.5rem',
+                      boxShadow: '0 4px 8px rgba(0,0,0,0.05)',
+                      color: '#666'
+                    }}
+                  >
+                    You have to pay Premium for this feature.
+                  </div>
+                )}
+              </div>
+
+              {/* Change Password item */}
+              <div className="mb-3">
+                <button
+                  className="btn btn-light w-100 text-start d-flex justify-content-between align-items-center"
+                  style={{ borderRadius: '0.5rem' }}
+                  onClick={() => {
+                    setOpenPass(p => !p);
+                    setOpenName(false);
+                  }}
+                >
+                  Change Password
+                  <i className={`bi ms-2 ${openPass ? 'bi-caret-up-fill' : 'bi-caret-down-fill'}`}></i>
+                </button>
+                {openPass && (
+                  <div
+                    className="mt-1 p-2 text-center small"
+                    style={{
+                      backgroundColor: '#fff',
+                      borderRadius: '0.5rem',
+                      boxShadow: '0 4px 8px rgba(0,0,0,0.05)',
+                      color: '#666'
+                    }}
+                  >
+                    You have to pay Premium for this feature.
+                  </div>
+                )}
+              </div>
+
+              <button
+                onClick={handleLogout}
+                className="btn w-100 shadow-sm"
+                style={{
+                  backgroundColor: '#f75815',
+                  color: '#fff',
+                  borderRadius: '2rem',
+                  padding: '0.5rem',
+                }}
+              >
+                <i className="bi bi-box-arrow-right me-2"></i>Logout
+              </button>
+            </div>
+          )}
+        </div>
     </>
                   ) : (
                     <>
