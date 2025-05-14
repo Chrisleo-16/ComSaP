@@ -125,8 +125,6 @@ const Navbar = () => {
                 <li><Link to="/contact" className='link'>Contact</Link></li>
                 
                 <div className="buttos d-flex flex-wrap gap-3" style={{ marginLeft: '30px' }}>
-                    
-<>
   {isLoggedIn ? (
     <>
       <div className="position-relative" ref={dropdownRef}>
@@ -194,6 +192,7 @@ const Navbar = () => {
       </div>
     </>
   ) : null}
+  </div>
 </>
                   
                   ) : (
