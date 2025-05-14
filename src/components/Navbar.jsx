@@ -128,42 +128,107 @@ const Navbar = () => {
                   {isLoggedIn ? (
                     <>
                         <div className="position-relative" ref={dropdownRef}>
-                <i
-                  className="bi bi-person-circle fs-3"
-                  style={{ cursor: 'pointer', color:'#f75815' }}
-                  title={userName}
-                  onClick={() => setShowDropdown(prev => !prev)}
-                />
-                {showDropdown && (
-                  <div
-                    className="position-absolute start-100 top-0 mt-2 ms-2 p-3 shadow-sm animate__animated animate__fadeInDown"
-                    style={{
-                      backgroundColor: '#fff7f7',
-                      borderRadius: '0.5rem',
-                      minWidth: '180px',
-                      zIndex: 1000,
-                    }}
-                  >
-                    <div className="d-flex align-items-center mb-2">
-                      <i className="bi bi-star-fill text-warning me-2"></i>
-                      <span className="fw-semibold">{userName}</span>
-                    </div>
-                    <hr className="my-1" />
-                    <button
-                      onClick={handleLogout}
-                      className="btn w-100 shadow-sm"
-                      style={{
-                        backgroundColor: '#f75815',
-                        color: '#fff',
-                        borderRadius: '2rem',
-                        padding: '0.5rem',
-                      }}
-                    >
-                      <i className="bi bi-box-arrow-right me-2"></i>Logout
-                    </button>
-                  </div>
-                )}
-              </div>
+      {/* trigger icon */}
+      <i
+        className="bi bi-person-circle fs-3"
+        style={{ cursor: 'pointer', color: '#f75815' }}
+        onClick={() => setShowDropdown(v => !v)}
+      />
+
+      {showDropdown && (
+        <div
+          className="position-absolute start-100 top-0 mt-2 ms-2 p-3 shadow-sm animate__animated animate__fadeInDown"
+          style={{
+            backgroundColor: '#fff7f7',
+            borderRadius: '0.5rem',
+            minWidth: '220px',
+            zIndex: 1000,
+          }}
+        >
+          {/* header */}
+          <div className="d-flex align-items-center mb-3">
+            <img
+              src={userAvatar}
+              alt="Avatar"
+              className="rounded-circle me-2"
+              style={{ width: '40px', height: '40px', objectFit: 'cover' }}
+            />
+            <div>
+              <div className="fw-semibold">{userName}</div>
+              <div className="text-secondary small">{userEmail}</div>
+            </div>
+          </div>
+
+          <hr className="my-2" />
+
+          {/* menu items */}
+          <button className="d-flex align-items-center w-100 btn p-2 mb-1 text-start">
+            <i className="bi bi-person me-2"></i>
+            Account
+          </button>
+          <button className="d-flex align-items-center w-100 btn p-2 mb-1 text-start">
+            <i className="bi bi-grid me-2"></i>
+            Integrations
+          </button>
+          <button className="d-flex align-items-center w-100 btn p-2 mb-1 text-start">
+            <i className="bi bi-gear me-2"></i>
+            Settings
+          </button>
+          <button className="d-flex align-items-center w-100 btn p-2 mb-1 text-start">
+            <i className="bi bi-book me-2"></i>
+            Guide
+          </button>
+          <button className="d-flex align-items-center w-100 btn p-2 mb-2 text-start">
+            <i className="bi bi-question-circle me-2"></i>
+            Help
+          </button>
+
+          <hr className="my-2" />
+
+          {/* plan info */}
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <div>
+              <div className="small text-secondary">Free Plan</div>
+              <div className="fw-semibold small">1,500 credits</div>
+            </div>
+            <button className="btn btn-outline-primary btn-sm">Upgrade</button>
+          </div>
+
+          <hr className="my-2" />
+
+          {/* sign out */}
+          <button
+            onClick={handleLogout}
+            className="d-flex align-items-center w-100 btn p-2 text-start"
+          >
+            <i className="bi bi-box-arrow-right me-2"></i>
+            Sign Out
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ProfileDropdown;
+How to integrate
+Import & render inside your navbar:
+
+jsx
+Copy code
+import ProfileDropdown from './ProfileDropdown';
+
+// …
+<div className="buttos d-flex flex-wrap gap-3" style={{ marginLeft: '30px' }}>
+  {isLoggedIn && (
+    <ProfileDropdown
+      userName={userName}
+      userEmail={userEmail}       // pass the user’s email
+      userAvatar={userAvatarUrl}  // pass the avatar URL
+      handleLogout={handleLogout}
+    />
+  )}
+</div>
                     </>
                   ) : (
                     <>
