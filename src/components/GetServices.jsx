@@ -1,3 +1,4 @@
+// src/components/GetServices.jsx
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'animate.css';
@@ -7,24 +8,50 @@ import axios from 'axios';
 
 const GetServices = () => {
   const [events, setEvents] = useState([]);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState('');
-  const navigate = useNavigate();
+  const [filteredEvents, setFilteredEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [loading, setLoading] = useState('');
+  const [error, setError] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState(null);
 
-  // Add this to check if the user is authenticated
-  const isAuthenticated = false; // This should be replaced with your auth check (e.g. token, user context, etc.)
+  const navigate = useNavigate();
+  const imgUrl = 'https://community.pythonanywhere.com/static/images/';
 
-  const getEvents = async () => {
-    setLoading("Loading Events");
+  // ―――――――――――――――――――――――――――――
+  // 1) Load user auth + role from localStorage
+  // ―――――――――――――――――――――――――――――
+  useEffect(() => {
     try {
-      const response = await axios.get("https://community.pythonanywhere.com/api/get_events");
-      setEvents(response.data);
-      setLoading("");
-    } catch (error) {
+      const userBlob = localStorage.getItem('user');
+      if (!userBlob) return;
+
+      const { token, role } = JSON.parse(userBlob);
+      if (token) {
+        setIsAuthenticated(true);
+        setUserRole(role);
+      }
+    } catch (err) {
+      console.error('Failed to parse user:', err);
+      localStorage.removeItem('user');
+    }
+  }, []);
+
+  // ―――――――――――――――――――――――――――――
+  // 2) Fetch events from API
+  // ―――――――――――――――――――――――――――――
+  const getEvents = async () => {
+    setLoading('Loading Events…');
+    try {
+      const { data } = await axios.get(
+        'https://community.pythonanywhere.com/api/get_events'
+      );
+      setEvents(data);
       setLoading('');
-      setError(error.message);
+    } catch (err) {
+      console.error(err);
+      setError('Failed to load events.');
+      setLoading('');
     }
   };
 
@@ -32,177 +59,153 @@ const GetServices = () => {
     getEvents();
   }, []);
 
-  // Filter events based on the search query
+  // ―――――――――――――――――――――――――――――
+  // 3) Filter out past events + apply search
+  // ―――――――――――――――――――――――――――――
   useEffect(() => {
-    if (!events.length) {
-      setFilteredProducts([]);
-      return;
-    }
-
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const filtered = events.filter((event) => {
-      const eventDate = new Date(event.event_date_time);
-      eventDate.setHours(0, 0, 0, 0);
-      if (eventDate < today) return false;
+    const filtered = events
+      .filter((ev) => {
+        const d = new Date(ev.event_date_time);
+        d.setHours(0, 0, 0, 0);
+        return d >= today;
+      })
+      .filter((ev) => {
+        const q = searchQuery.trim().toLowerCase();
+        if (!q) return true;
+        return (
+          ev.event_title.toLowerCase().includes(q) ||
+          ev.event_description.toLowerCase().includes(q)
+        );
+      });
 
-      const q = searchQuery.toLowerCase();
-      return (
-        event.event_title.toLowerCase().includes(q) ||
-        event.event_description.toLowerCase().includes(q)
-      );
-    });
-
-    setFilteredProducts(filtered);
+    setFilteredEvents(filtered);
   }, [events, searchQuery]);
 
-  const imgUrl = "https://community.pythonanywhere.com/static/images/";
-
-  // Handle registration button click
+  // ―――――――――――――――――――――――――――――
+  // 4) Handle Register button logic
+  // ―――――――――――――――――――――――――――――
   const handleRegisterClick = (event) => {
     if (!isAuthenticated) {
-      // Redirect to sign-up page if not authenticated
+      // Not logged in → send to sign-up
       navigate('/sign-up', { state: { fromEvent: event } });
-    } else {
-      // If already authenticated, proceed to payment
+    } else if (userRole !== 'admin') {
+      // Logged in non-admin → go to payment
       navigate('/mpesa-payment', { state: { event } });
+    } else {
+      // Logged in admin → block or redirect
+      alert('Admins are not allowed to register for events.');
     }
   };
 
   return (
-    <div className='row container-fluid'>
-      <main className="main">
-        <div className="page-title">
-          <div className="breadcrumbs">
-            <nav aria-label="breadcrumb">
-              <ol className="breadcrumb">
-                <li className="breadcrumb-item">
-                  <Link to="#"><i className="bi bi-house"></i> Home</Link>
-                </li>
-                <li className="breadcrumb-item"><Link to="#">Category</Link></li>
-                <li className="breadcrumb-item active current">Get Services</li>
-              </ol>
-            </nav>
-          </div>
-
-          <div className="title-wrapper">
-            <h1>Get Services</h1>
-          </div>
+    <div className="container-fluid row">
+      {/* Loading / Error */}
+      {loading && (
+        <div
+          className="alert alert-info w-75 mx-auto animate__animated animate__fadeInDown"
+          role="alert"
+          style={{ borderRadius: '1rem' }}>
+          <div className="spinner-border spinner-border-sm me-3" role="status" />
+          {loading}
         </div>
-      </main>
-      <div className="container py-4">
-        {loading && (
-          <div
-            className="alert alert-info d-flex align-items-center w-75 mx-auto animate__animated animate__fadeInDown"
-            role="alert"
-            style={{ borderRadius: '1rem' }}
-          >
+      )}
+      {error && (
+        <div
+          className="alert alert-danger w-75 mx-auto animate__animated animate__shakeX"
+          role="alert"
+          style={{ borderRadius: '1rem' }}>
+          <i className="bi bi-exclamation-triangle-fill me-2 fs-4" />
+          {error}
+        </div>
+      )}
+
+      {/* Search */}
+      <form
+        className="d-flex justify-content-center mb-4"
+        onSubmit={(e) => e.preventDefault()}>
+        <div className="input-group w-75">
+          <input
+            type="text"
+            className="form-control rounded-pill shadow-sm"
+            placeholder="Search events…"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
+          />
+          <button
+            type="submit"
+            className="btn shadow-sm"
+            style={{
+              backgroundColor: '#f75815',
+              color: '#fff',
+              borderTopLeftRadius: 0,
+              borderBottomLeftRadius: 0,
+              minWidth: '3.5rem',
+            }}>
+            <i className="bi bi-search" />
+          </button>
+        </div>
+      </form>
+
+      {/* Event Cards */}
+      <div className="row">
+        {filteredEvents.map((event, idx) => (
+          <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={idx}>
             <div
-              className="spinner-border spinner-border-sm text-info me-3"
-              role="status"
-              aria-hidden="true"
-            ></div>
-            <div>{loading}</div>
-          </div>
-        )}
-        {error && (
-          <div
-            className="alert alert-danger d-flex align-items-center w-75 mx-auto animate__animated animate__shakeX"
-            role="alert"
-            style={{ borderRadius: '1rem' }}
-          >
-            <i className="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
-            <div>{error}</div>
-          </div>
-        )}
-
-        <form
-          className="search-form d-flex justify-content-center mb-4"
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <div className="inputi-group w-100">
-            <input
-              type="text"
-              placeholder="Search events..."
-              className="form-control rounded-pill shadow-sm"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
-            />
-            <button
-              type="submit"
-              className="btn shadow-sm"
+              className="card h-100 shadow-sm"
               style={{
-                backgroundColor: '#f75815',
-                color: '#fff',
-                borderTopLeftRadius: 0,
-                borderBottomLeftRadius: 0,
-                minWidth: '3.5rem',
-                justifyContent: 'center',
-              }}
-            >
-              <i className="bi bi-search"></i>
-            </button>
-          </div>
-        </form>
-
-        <div className="row">
-          {filteredProducts
-            .filter(event => {
-              const today = new Date();
-              today.setHours(0, 0, 0, 0);
-              const d = new Date(event.event_date_time);
-              d.setHours(0, 0, 0, 0);
-              return d >= today;
-            })
-            .map((event, index) => (
-              <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={index}>
-                <div
-                  className="card h-100 shadow-sm"
+                backgroundColor: '#fff7f7',
+                borderRadius: '1rem',
+                overflow: 'hidden',
+              }}>
+              <img
+                src={imgUrl + event.event_photo}
+                alt={event.event_title}
+                className="card-img-top"
+                style={{ objectFit: 'cover', height: '180px' }}
+              />
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title text-truncate">{event.event_title}</h5>
+                <p className="card-text flex-grow-1 text-muted">
+                  {event.event_description}
+                </p>
+                <ul className="list-unstyled small mb-3 text-secondary">
+                  <li>
+                    <strong>Location:</strong> {event.event_location}
+                  </li>
+                  <li>
+                    <strong>Date:</strong>{' '}
+                    {new Date(event.event_date_time).toLocaleString()}
+                  </li>
+                  <li>
+                    <strong>Organizer:</strong> {event.event_organizer}
+                  </li>
+                  <li>
+                    <strong>Cost:</strong> Ksh {event.event_cost}.00
+                  </li>
+                </ul>
+                <button
+                  className="btn mt-auto"
                   style={{
-                    backgroundColor: '#fff7f7',
-                    borderRadius: '1rem',
-                    overflow: 'hidden',
+                    backgroundColor: '#f75815',
+                    color: '#fff',
+                    borderRadius: '2rem',
+                    padding: '0.5rem 1.5rem',
                   }}
-                >
-                  <img
-                    src={imgUrl + event.event_photo}
-                    className="card-img-top"
-                    alt={event.event_title}
-                    style={{ objectFit: 'cover', height: '180px' }}
-                  />
-                  <div className="card-body d-flex flex-column">
-                    <h5 className="card-title text-truncate">{event.event_title}</h5>
-                    <p className="card-text flex-grow-1 text-muted">
-                      {event.event_description}
-                    </p>
-                    <ul className="list-unstyled small mb-3 text-secondary">
-                      <li><strong>Location:</strong> {event.event_location}</li>
-                      <li><strong>Date:</strong> {new Date(event.event_date_time).toLocaleString()}</li>
-                      <li><strong>Organizer:</strong> {event.event_organizer}</li>
-                      <li><strong>Cost:</strong> Ksh {event.event_cost}.00</li>
-                    </ul>
-                    <button
-                      onClick={() => handleRegisterClick(event)}
-                      className="btn mt-auto"
-                      style={{
-                        backgroundColor: '#f75815',
-                        color: '#fff',
-                        borderRadius: '2rem',
-                        padding: '0.5rem 1.5rem',
-                      }}
-                    >
-                      Register
-                    </button>
-                  </div>
-                </div>
+                  onClick={() => handleRegisterClick(event)}>
+                  Register
+                </button>
               </div>
-            ))}
-        </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
 export default GetServices;
+        
