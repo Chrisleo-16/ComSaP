@@ -1,132 +1,106 @@
-// src/components/GetServices.jsx
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+// import PureCounter from '@srexi/purecounterjs';
 import 'animate.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import {Link, useNavigate} from 'react-router-dom'
+import axios from 'axios'
+
 
 const GetServices = () => {
   const [events, setEvents] = useState([]);
-  const [filteredEvents, setFilteredEvents] = useState([]);
-  const [searchQuery, setSearchQuery]     = useState('');
-  const [loading, setLoading]             = useState('');
-  const [error, setError]                 = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState('')
+  const navigate = useNavigate('')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
-  const navigate = useNavigate();
-  const imgUrl   = 'https://community.pythonanywhere.com/static/images/';
-
-  // 1) Check login status once on mount
-  useEffect(() => {
+  const getEvents = async () => {
+    setLoading("Loading Events")
     try {
-      const userBlob = localStorage.getItem('user');
-      if (userBlob) {
-        const { token } = JSON.parse(userBlob);
-        if (token) setIsAuthenticated(true);
-      }
-    } catch {
-      localStorage.removeItem('user');
+      const response = await axios.get("https://community.pythonanywhere.com/api/get_events")
+      setEvents(response.data)
+      setLoading("")
+    } catch (error) {
+      setLoading('')
+      setError(error.message)
+      
     }
-  }, []);
-
-  // 2) Fetch events
+  }
   useEffect(() => {
-    const fetchEvents = async () => {
-      setLoading('Loading Events…');
-      try {
-        const { data } = await axios.get(
-          'https://community.pythonanywhere.com/api/get_events'
-        );
-        setEvents(data);
-      } catch (err) {
-        setError('Failed to load events.');
-      } finally {
-        setLoading('');
-      }
-    };
-    fetchEvents();
-  }, []);
+    getEvents()
+  },[])
 
-  // 3) Filter out past events + apply search
+  
   useEffect(() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+      if (!events) return;
+      const filtered= events.filter((event) =>
+      event.event_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.event_description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.event_date_time.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+  setFilteredProducts(filtered)
 
-    const filtered = events
-      .filter(ev => {
-        const d = new Date(ev.event_date_time);
-        d.setHours(0, 0, 0, 0);
-        return d >= today;
-      })
-      .filter(ev => {
-        const q = searchQuery.trim().toLowerCase();
-        if (!q) return true;
-        return (
-          ev.event_title
-            .toLowerCase()
-            .includes(q) ||
-          ev.event_description
-            .toLowerCase()
-            .includes(q)
-        );
-      });
+  },[searchQuery,events])
+  const imgUrl = ("https://community.pythonanywhere.com/static/images/")
+  return (    
+    <div className='row container-fluid '>
+    <main className="main">
+    <div className="page-title">
+<div className="breadcrumbs">
+  <nav aria-label="breadcrumb">
+    <ol className="breadcrumb">
+      <li className="breadcrumb-item"><Link to="#"><i className="bi bi-house"></i> Home</Link></li>
+      <li className="breadcrumb-item"><Link to="#">Category</Link></li>
+      <li className="breadcrumb-item active current">Get Services</li>
+    </ol>
+  </nav>
+</div>
 
-    setFilteredEvents(filtered);
-  }, [events, searchQuery]);
-
-  // 4) Register button logic
-  const handleRegisterClick = event => {
-    if (!isAuthenticated) {
-      navigate('/sign-up', { state: { fromEvent: event } });
-    } else {
-      navigate('/mpesa-payment', { state: { event } });
-    }
-  };
-
-  return (
-    <div className="container-fluid row">
-      {/* Loading / Error */}
+<div className="title-wrapper">
+  <h1>Get Services</h1>
+  <p>We found <strong>44</strong> results for your search term <strong>search tern</strong></p>
+</div>
+    </div>
+    </main>
+    <div className="container py-4">
       {loading && (
         <div
-          className="alert alert-info w-75 mx-auto animate__fadeInDown"
+          className="alert alert-info d-flex align-items-center w-75 mx-auto animate__animated animate__fadeInDown"
           role="alert"
           style={{ borderRadius: '1rem' }}
         >
           <div
-            className="spinner-border spinner-border-sm me-3"
+            className="spinner-border spinner-border-sm text-info me-3"
             role="status"
-          />
-          {loading}
+            aria-hidden="true"
+          ></div>
+          <div>{loading}</div>
         </div>
       )}
       {error && (
         <div
-          className="alert alert-danger w-75 mx-auto animate__shakeX"
+          className="alert alert-danger d-flex align-items-center w-75 mx-auto animate__animated animate__shakeX"
           role="alert"
           style={{ borderRadius: '1rem' }}
         >
-          <i className="bi bi-exclamation-triangle-fill me-2 fs-4" />
-          {error}
+          <i className="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+          <div>{error}</div>
         </div>
       )}
 
-      {/* Search */}
-      <form
-        className="d-flex justify-content-center mb-4"
-        onSubmit={e => e.preventDefault()}
+<form
+        className="search-form d-flex justify-content-center mb-4"
+        onSubmit={(e) => e.preventDefault()}
       >
-        <div className="input-group w-75">
+        <div className="inputi-group w-100">
           <input
             type="text"
+            placeholder="Search events..."
             className="form-control rounded-pill shadow-sm"
-            placeholder="Search events…"
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            style={{
-              borderTopRightRadius: 0,
-              borderBottomRightRadius: 0,
-            }}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
           />
           <button
             type="submit"
@@ -137,17 +111,18 @@ const GetServices = () => {
               borderTopLeftRadius: 0,
               borderBottomLeftRadius: 0,
               minWidth: '3.5rem',
+              justifyContent: 'center',
             }}
           >
-            <i className="bi bi-search" />
+            <i className="bi bi-search"></i>
           </button>
         </div>
       </form>
 
-      {/* Event Cards */}
+
       <div className="row">
-        {filteredEvents.map((ev, idx) => (
-          <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={idx}>
+        {filteredProducts.map((event, index) => (
+          <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={index}>
             <div
               className="card h-100 shadow-sm"
               style={{
@@ -157,34 +132,28 @@ const GetServices = () => {
               }}
             >
               <img
-                src={imgUrl + ev.event_photo}
-                alt={ev.event_title}
+                src={imgUrl + event.event_photo}
                 className="card-img-top"
+                alt={event.event_title}
                 style={{ objectFit: 'cover', height: '180px' }}
               />
               <div className="card-body d-flex flex-column">
                 <h5 className="card-title text-truncate">
-                  {ev.event_title}
+                  {event.event_title}
                 </h5>
                 <p className="card-text flex-grow-1 text-muted">
-                  {ev.event_description}
+                  {event.event_description}
                 </p>
                 <ul className="list-unstyled small mb-3 text-secondary">
-                  <li>
-                    <strong>Location:</strong> {ev.event_location}
-                  </li>
-                  <li>
-                    <strong>Date:</strong>{' '}
-                    {new Date(ev.event_date_time).toLocaleString()}
-                  </li>
-                  <li>
-                    <strong>Organizer:</strong> {ev.event_organizer}
-                  </li>
-                  <li>
-                    <strong>Cost:</strong> Ksh {ev.event_cost}.00
-                  </li>
+                  <li><strong>Location:</strong> {event.event_location}</li>
+                  <li><strong>Date:</strong> {new Date(event.event_date_time).toLocaleString()}</li>
+                  <li><strong>Organizer:</strong> {event.event_organizer}</li>
+                  <li><strong>Cost:</strong> Ksh {event.event_cost}.00</li>
                 </ul>
                 <button
+                  onClick={() =>
+                    navigate('/mpesa-payment', { state: { event } })
+                  }
                   className="btn mt-auto"
                   style={{
                     backgroundColor: '#f75815',
@@ -192,7 +161,6 @@ const GetServices = () => {
                     borderRadius: '2rem',
                     padding: '0.5rem 1.5rem',
                   }}
-                  onClick={() => handleRegisterClick(ev)}
                 >
                   Register
                 </button>
@@ -202,8 +170,8 @@ const GetServices = () => {
         ))}
       </div>
     </div>
-  );
-};
+    </div>
+  )
+}
 
 export default GetServices;
-      
