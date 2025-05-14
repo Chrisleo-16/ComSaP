@@ -14,10 +14,10 @@ const MpesaPayment = () => {
         e.preventDefault();
         setMessage('');
 
-        // Basic Kenyan phone number validation (e.g., 2547XXXXXXXX)
-        const phonePattern = /^2547\d{8}$/;
+        // Basic Kenyan phone number validation (e.g., 254XXXXXXXXX)
+        const phonePattern = /^254\d{8}$/;
         if (!phone || !phonePattern.test(phone)) {
-            setMessage('Please enter a valid phone number (e.g. 2547XXXXXXXX).');
+            setMessage('Please enter a valid phone number (e.g. 254XXXXXXXXX).');
             return;
         }
 
