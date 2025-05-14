@@ -60,8 +60,22 @@ const GetServices = () => {
   return (
     <div className='row container-fluid'>
       <main className="main">
-        {/* ... your breadcrumb & title code ... */}
-      </main>
+    <div className="page-title">
+<div className="breadcrumbs">
+  <nav aria-label="breadcrumb">
+    <ol className="breadcrumb">
+      <li className="breadcrumb-item"><Link to="#"><i className="bi bi-house"></i> Home</Link></li>
+      <li className="breadcrumb-item"><Link to="#">Category</Link></li>
+      <li className="breadcrumb-item active current">Get Services</li>
+    </ol>
+  </nav>
+</div>
+
+<div className="title-wrapper">
+  <h1>Get Services</h1>
+</div>
+    </div>
+    </main>
 
       <div className="container py-4">
         {loading && (
